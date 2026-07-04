@@ -8,6 +8,7 @@ from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
+import streamlit as st
 
 from tools import get_question, check_answer
 
@@ -31,7 +32,9 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
 
 # --- Step 5c: Set up the LLM and bind tools to it ---
-llm = ChatGroq(model="openai/gpt-oss-20b", groq_api_key=os.getenv("GROQ_API_KEY"))
+groq_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
+llm = ChatGroq(model="openai/gpt-oss-20b", groq_api_key=groq_key)
+
 llm_with_tools = llm.bind_tools(tools)
 
 # --- Step 5d: Define the "brain" node ---
