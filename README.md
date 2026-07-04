@@ -2,6 +2,8 @@
 
 An AI-powered, agentic quiz tutor built with **LangGraph** and **Groq LLM**. The agent intelligently fetches quiz questions and checks your answers using a tool-calling loop — no hard-coded logic, just a conversational AI doing the heavy lifting.
 
+Supports both a **Streamlit web UI** and a **CLI** mode.
+
 ---
 
 ## ✨ Features
@@ -9,15 +11,16 @@ An AI-powered, agentic quiz tutor built with **LangGraph** and **Groq LLM**. The
 - 🤖 **Agentic AI** — Uses a LangGraph state machine with conditional tool-calling edges
 - 📚 **Topic Filtering** — Ask for questions on a specific topic (e.g., "Azure", "DI")
 - ✅ **Answer Checking** — Submits your answer and gets instant, intelligent feedback
-- 💬 **CLI Chat Interface** — Simple command-line conversation loop
-- ⚡ **Groq-powered** — Fast inference using Groq's LLM API
+- 🌐 **Streamlit Web UI** — Clean, interactive chat interface in the browser
+- 💬 **CLI Mode** — Simple command-line conversation loop (run `agent.py` directly)
+- ⚡ **Groq-powered** — Fast inference using Groq's LLM API (`openai/gpt-oss-20b`)
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-You (CLI)
+You (Browser / CLI)
    │
    ▼
 [chatbot node]  ──── LLM decides ────►  [tools node]
@@ -37,10 +40,12 @@ The agent uses a **ReAct-style loop**:
 ```
 agentic-quiz-tutor/
 ├── agent.py          # LangGraph graph definition & CLI loop
+├── app.py            # Streamlit web UI (chat interface)
 ├── tools.py          # Tool functions: get_question & check_answer
 ├── data/
 │   ├── __init__.py
 │   └── quiz_data.py  # Quiz question bank (QUIZ_BANK list)
+├── requirements.txt  # Python dependencies
 ├── .env              # API keys (not committed to git)
 ├── .gitignore
 └── README.md
@@ -72,7 +77,13 @@ source venv/bin/activate
 ### 3. Install dependencies
 
 ```bash
-pip install python-dotenv langchain-groq langgraph langchain-core
+pip install -r requirements.txt
+```
+
+Or manually:
+
+```bash
+pip install langgraph langchain-core langchain-groq python-dotenv streamlit
 ```
 
 ### 4. Configure environment variables
@@ -85,7 +96,17 @@ GROQ_API_KEY="your_groq_api_key_here"
 
 > Get your free API key at [https://console.groq.com](https://console.groq.com)
 
-### 5. Run the agent
+### 5. Run the app
+
+**Web UI (recommended):**
+
+```bash
+streamlit run app.py
+```
+
+Then open [http://localhost:8501](http://localhost:8501) in your browser.
+
+**CLI mode:**
 
 ```bash
 python agent.py
@@ -96,8 +117,6 @@ python agent.py
 ## 💬 Example Usage
 
 ```
-Quiz Tutor Agent ready. Type 'quit' to exit.
-
 You: Give me a question about Azure
 Agent: What Azure service is used for serverless compute?
 
@@ -109,8 +128,6 @@ Agent: What is the .NET term for dependency injection container?
 
 You: IServiceCollection
 Agent: Correct! The answer is 'IServiceCollection'.
-
-You: quit
 ```
 
 ---
@@ -150,7 +167,8 @@ To add more questions, simply append entries to `QUIZ_BANK` in `data/quiz_data.p
 |---------|---------|
 | [LangGraph](https://github.com/langchain-ai/langgraph) | Agentic state machine / graph |
 | [LangChain Core](https://python.langchain.com/) | Tool abstractions & message types |
-| [langchain-groq](https://python.langchain.com/docs/integrations/chat/groq/) | Groq LLM integration |
+| [langchain-groq](https://python.langchain.com/docs/integrations/chat/groq/) | Groq LLM integration (`openai/gpt-oss-20b`) |
+| [Streamlit](https://streamlit.io/) | Web chat UI |
 | [python-dotenv](https://pypi.org/project/python-dotenv/) | Environment variable management |
 
 ---
