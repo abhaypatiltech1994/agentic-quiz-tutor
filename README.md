@@ -4,6 +4,8 @@ An AI-powered, agentic quiz tutor built with **LangGraph** and **Groq LLM**. The
 
 Supports both a **Streamlit web UI** and a **CLI** mode.
 
+🔗 **Live Demo:** [azure-quiz-agent.streamlit.app](https://azure-quiz-agent.streamlit.app/)
+
 ---
 
 ## ✨ Features
